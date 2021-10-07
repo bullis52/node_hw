@@ -25,7 +25,7 @@ const authSchema = new Schema({
         enum: [
             'user',
             'admin',
-            'manager'
+            'managers'
         ]
     }
 },{timestamps:true});
