@@ -1,12 +1,14 @@
 const router = require('express').Router();
 
-const userController = require('../controllesr/user.controllers');
+const userController = require('../controllers/user.controllers');
+
+const authMiddleWare = require('../middleware/auth.middleware');
 
 router.get(`/`,userController.getUsers);
 
-router.get(`/:user_id`, userController.getUserById);
+router.post(`/`,authMiddleWare.createAuthLoginMiddleWare,authMiddleWare.createAuthEmailMiddleWare,userController.createUsers);
 
-router.post(`/`,userController.createUsers);
+router.get(`/:user_id`, userController.getUserById);
 
 router.put(`/:user_id`,userController.updateUsers);
 
