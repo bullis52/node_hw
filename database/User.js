@@ -1,15 +1,15 @@
-const {Schema,model} = require('mongoose');
+const {Schema, model} = require('mongoose');
 
-const authSchema = new Schema({
-    login:{
+const userSchema = new Schema({
+    login: {
         type: String,
-        unique:true,
-        required:true,
+        unique: true,
+        required: true,
         trim: true
     },
-    password:{
-        type:String,
-        required:true,
+    password: {
+        type: String,
+        required: true,
         minLength: 6,
         maxLength: 10
     },
@@ -28,6 +28,6 @@ const authSchema = new Schema({
             'managers'
         ]
     }
-},{timestamps:true});
+}, {timestamps: true});
 
-module.exports = model('auth',authSchema);
+module.exports = model('user', userSchema);

@@ -7,7 +7,6 @@ const app = express();
 
 mongoose.connect(config.MONGO_CONNECT_URL);
 
-
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
