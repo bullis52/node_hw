@@ -1,5 +1,7 @@
 const {Schema, model} = require('mongoose');
 
+const userRoles = require('../config/user.roles');
+
 const userSchema = new Schema({
     login: {
         type: String,
@@ -10,8 +12,6 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
-        minLength: 6,
-        maxLength: 10
     },
     email: {
         type: String,
@@ -21,12 +21,8 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        default: 'user',
-        enum: [
-            'user',
-            'admin',
-            'managers'
-        ]
+        default: userRoles.USER,
+        enum: Object.values(userRoles)
     }
 }, {timestamps: true});
 

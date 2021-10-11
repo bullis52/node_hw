@@ -14,7 +14,6 @@ const userRouter = require('./routes/user.route');
 
 app.use('/users', userRouter);
 
-
-app.listen(5000, () => {
+app.listen(5001, () => {
     console.log(`app listen ${config.PORT}`);
 });

@@ -1,14 +1,11 @@
-const User = require('../database/User');
+const userUtil = require('../util/util.user');
 
 module.exports = {
-    authentication: async (req, res) => {
+    authentication: (req, res) => {
         try {
-            const login = await User.findOne({email: req.body.email, password: req.body.password});
+            const user = userUtil.userNormalizator(req.body);
 
-            if (!login) {
-                throw new Error('failed email or password');
-            }
-            res.json('success');
+            res.json(user);
         } catch (e) {
             res.json(e.message);
         }

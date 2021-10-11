@@ -4,22 +4,22 @@ const {getUsers, deleteUsers, createUsers, getUserById, updateUsers,} = require(
 
 const {
     createAuthLoginMiddleWare,
-    createDeleteUserMidlleWare,
-    createAuthEmailMiddleWare
+    idUserMidlleWare,
+    createAuthEmailMiddleWare,
+    isUserBodyValid,
+    createloginUserMiddleware
 } = require('../middleware/auth.middleware');
 
 const {authentication} = require('../controllers/auth.controllers');
 
 router.get('/', getUsers);
+router.post('/', isUserBodyValid, createAuthLoginMiddleWare, createAuthEmailMiddleWare, createUsers);
 
-router.post('/', createAuthLoginMiddleWare, createAuthEmailMiddleWare, createUsers);
 
-router.post('/login', authentication);
+router.post('/login', createloginUserMiddleware, authentication);
 
-router.get('/:user_id', getUserById);
-
-router.put('/:user_id', createAuthLoginMiddleWare, updateUsers);
-
-router.delete('/:user_id', createDeleteUserMidlleWare, deleteUsers);
+router.get('/:user_id', idUserMidlleWare, getUserById);
+router.put('/:user_id', createAuthLoginMiddleWare, idUserMidlleWare, updateUsers);
+router.delete('/:user_id', idUserMidlleWare, deleteUsers);
 
 module.exports = router;
