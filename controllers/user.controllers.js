@@ -1,7 +1,5 @@
 const User = require('../database/User');
-
 const passwordHashing = require('../service/password');
-
 const utilUser = require('../util/util.user');
 
 module.exports = {
@@ -18,7 +16,6 @@ module.exports = {
             res.json(e);
         }
     },
-
     getUserById: async (req, res) => {
 
         try {
@@ -32,30 +29,28 @@ module.exports = {
             res.json(e);
         }
     },
-
     createUsers: async (req, res) => {
 
         try {
             const PasswordHash = await passwordHashing.hash(req.body.password);
             const users = await User.create({...req.body, password: PasswordHash});
-            res.json(users);
+
+            res.json(`${users.email} - registred!!!!!!!!!!!!`);
         } catch (e) {
-            res.json(e.message);
+            res.json(e);
         }
 
     },
-
     deleteUsers: async (req, res) => {
 
         try {
             const {user_id} = req.params;
             const users = await User.findOneAndDelete(user_id);
-            res.json(users);
+            res.json(`${users.email} - deleted`);
         } catch (e) {
             res.json(e);
         }
     },
-
     updateUsers: async (req, res) => {
 
         try {
