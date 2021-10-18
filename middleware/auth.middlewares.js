@@ -9,8 +9,8 @@ module.exports = {
             const {email, password} = req.body;
             const login = await User
                 .findOne({email})
-                .lean()
-                .select('+password');
+                .select('+password')
+                .lean();
 
             await passwordServices.compare(password, login.password);
 
@@ -20,7 +20,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
 
     },
@@ -38,7 +38,7 @@ module.exports = {
             req.body = value;
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     }
 };

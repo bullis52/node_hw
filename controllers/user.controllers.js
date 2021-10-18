@@ -3,7 +3,7 @@ const passwordHashing = require('../service/password');
 const utilUser = require('../util/util.user');
 
 module.exports = {
-    getUsers: async (req, res) => {
+    getUsers: async (req, res, next) => {
 
         try {
             const users = await User.find().lean();
@@ -13,23 +13,23 @@ module.exports = {
             res.json(userNormalizate);
 
         } catch (e) {
-            res.json(e);
+            next(e);
         }
     },
-    getUserById: async (req, res) => {
+    getUserById: async (req, res, next) => {
 
         try {
             const {user_id} = req.params;
             const users = await User.findById(user_id).lean();
 
-            const userNormalizate = utilUser.userNormalizator(users);
+            const userNormalizate = await utilUser.userNormalizator(users);
 
             res.json(userNormalizate);
         } catch (e) {
-            res.json(e);
+            next(e);
         }
     },
-    createUsers: async (req, res) => {
+    createUsers: async (req, res, next) => {
 
         try {
             const PasswordHash = await passwordHashing.hash(req.body.password);
@@ -37,29 +37,29 @@ module.exports = {
 
             res.json(`${users.email} - registred!!!!!!!!!!!!`);
         } catch (e) {
-            res.json(e);
+            next(e);
         }
 
     },
-    deleteUsers: async (req, res) => {
+    deleteUsers: async (req, res, next) => {
 
         try {
             const {user_id} = req.params;
             const users = await User.findOneAndDelete(user_id);
             res.json(`${users.email} - deleted`);
         } catch (e) {
-            res.json(e);
+            next(e);
         }
     },
-    updateUsers: async (req, res) => {
+    updateUsers: async (req, res, next) => {
 
         try {
             const {user_id} = req.params;
-            const users = await User.findByIdAndUpdate(user_id, req.body);
+            await User.findByIdAndUpdate(user_id, req.body);
 
-            res.json(users);
+            res.json(`${user_id} - updated!!!!!`);
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     }
 };

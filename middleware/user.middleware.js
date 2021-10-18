@@ -1,5 +1,6 @@
 const User = require('../database/User');
 const {userValitators} = require('../validator/index');
+const ErrorHandler = require("../errors/ErrorHandler");
 
 module.exports = {
     createAuthLoginMiddleWare: async (req, res, next) => {
@@ -13,7 +14,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -28,7 +29,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
 
     },
@@ -37,15 +38,17 @@ module.exports = {
 
         try {
             const {user_id} = req.params;
-            const userById = await User.findById(user_id);
+            const user = await User.findById(user_id);
 
-            if (!userById) {
-                throw new Error('id not exist');
+            if (!user) {
+                throw new ErrorHandler(`id is not defined`,418);
             }
+
+            req.user = user;
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
 
     },
@@ -61,7 +64,7 @@ module.exports = {
             req.body = value;
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
 
     },
@@ -80,7 +83,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
     isIdUserValid: (req, res, next) => {
@@ -97,7 +100,7 @@ module.exports = {
             req.body = value;
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e.message);
         }
     },
 };
